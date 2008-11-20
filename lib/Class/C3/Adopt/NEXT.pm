@@ -157,6 +157,8 @@ L<Class::C3> for method re-dispatch and L<Moose> for method modifiers.
 
 Florian Ragwitz C<rafl@debian.org>
 
+Tomas Doran C<bobtfish@bobtfish.net>
+
 =head1 LICENSE
 
 You may distribute this code under the same terms as Perl itself.

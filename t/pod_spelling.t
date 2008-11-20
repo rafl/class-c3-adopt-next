@@ -20,3 +20,4 @@ plugins
 MRO
 practices
 runtime
+Doran
