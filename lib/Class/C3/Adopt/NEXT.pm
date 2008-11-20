@@ -57,3 +57,108 @@ our $VERSION = '0.01';
 }
 
 1;
+
+__END__
+
+=head1 NAME
+
+Class::C3::Adopt::NEXT
+
+=head1 SYNOPSIS
+
+    package MyApp::Plugin::FooBar;
+    #use NEXT;
+    use Class::C3::Adopt::NEXT;
+
+    sub a_method {
+        my ($self) = @_;
+        # Do some stuff
+
+        # Re-dispatch method
+        $self->NEXT::method();
+    }
+
+=head1 DESCRIPTION
+
+L<NEXT> sucks. I mean, it B<really really sucks>. It was a good solution a few
+years ago, but isn't any more.  It's slow, and the order in which it
+re-dispatches methods appears random at times. It also encourages bad
+programming practices, as you end up with code to re-dispatch methods when all
+you really wanted to do was run some code before or after a method fired.
+
+However, if you have a large application, then weaning yourself off NEXT isn't
+easy.
+
+This module is intended as a drop-in replacement for NEXT, supporting the same
+interface, but using L<Class::C3> to do the hard work. You can then write new
+code without NEXT, and migrate individual source files to use Class::C3 or
+method modifiers as appropriate, at whatever pace you're comfortable with.
+
+=head1 MIGRATING
+
+There are two main reasons for using NEXT:
+
+=over
+
+=item Providing plugins which run functionality before/after your methods.
+
+Use L<Moose> and make all of your plugins L<Moose::Roles|Moose::Role>, then use
+method modifiers to wrap methods.
+
+Example:
+
+    package MyApp::Plugin::FooBar;
+    use Moose::Role;
+
+    before 'a_method' => {
+        my ($self) = @_;
+        # Do some stuff
+    };
+
+You can then use something like L<MooseX::Traits> or
+L<MooseX::Object::Pluggable> to load plugins dynamically.
+
+=item A complex class hierarchy where you actually need multiple dispatch.
+
+Recommended strategy is to find the core class responsible for loading all the
+other classes in your application and add the following code:
+
+    use Class::C3;
+    Class::C3::initialize();
+
+after you have loaded all of your modules.
+
+You then you gradually replace your calls to C<NEXT::method()> with
+C<maybe::next::method()>, and calls to C<NEXT::ACTUAL::method()> with
+C<next::method()>.
+
+On systems with Class::C3::XS loaded, or perl versions 5.9.
+
+=back
+
+=head1 CAVEATS
+
+There are some inheritance hierarchies that it is possible to create which
+cannot be resolved to a simple C3 hierarchy. In that case, this module will
+fall back to using NEXT.
+
+Because calculating the MRO of every class every time ->NEXT::foo is used
+from within it is too expensive, runtime manipulations of @ISA are prohibited.
+
+=head1 FUNCTIONS
+
+This module replaces C<NEXT::AUTOLOAD> with it's own version.
+
+=head1 SEE ALSO
+
+L<Class::C3> for method re-dispatch and L<Moose> for method modifiers.
+
+=head1 AUTHORS
+
+Florian Ragwitz C<rafl@debian.org>
+
+=head1 LICENSE
+
+You may distribute this code under the same terms as Perl itself.
+
+=cut
