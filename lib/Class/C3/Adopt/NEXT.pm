@@ -11,6 +11,7 @@ our $VERSION = '0.01';
 
 {
     my %c3_mro_ok;
+    my %warned_for;
 
     {
         my $orig = NEXT->can('AUTOLOAD');
@@ -35,7 +36,8 @@ our $VERSION = '0.01';
             }
 
             if ($c3_mro_ok{$class} || !length $c3_mro_ok{$class}) {
-                warnings::warnif("${class} is trying to use NEXT, which is crap. use Class::C3 or Moose method modifiers instead.");
+                warnings::warnif("${class} is trying to use NEXT, which is crap. use Class::C3 or Moose method modifiers instead.")
+                    unless $warned_for{$class}++;
             }
 
             unless ($c3_mro_ok{$class}) {
