@@ -86,12 +86,12 @@ re-dispatches methods appears random at times. It also encourages bad
 programming practices, as you end up with code to re-dispatch methods when all
 you really wanted to do was run some code before or after a method fired.
 
-However, if you have a large application, then weaning yourself off NEXT isn't
+However, if you have a large application, then weaning yourself off C<NEXT> isn't
 easy.
 
 This module is intended as a drop-in replacement for NEXT, supporting the same
 interface, but using L<Class::C3> to do the hard work. You can then write new
-code without NEXT, and migrate individual source files to use Class::C3 or
+code without C<NEXT>, and migrate individual source files to use C<Class::C3> or
 method modifiers as appropriate, at whatever pace you're comfortable with.
 
 =head1 MIGRATING
@@ -123,16 +123,22 @@ L<MooseX::Object::Pluggable> to load plugins dynamically.
 Recommended strategy is to find the core class responsible for loading all the
 other classes in your application and add the following code:
 
-    use Class::C3;
+    use MRO::Compat;
     Class::C3::initialize();
 
 after you have loaded all of your modules.
 
-You then you gradually replace your calls to C<NEXT::method()> with
+You then add C<use mro 'c3'> to the top of a package as you start converting it,
+and gradually replace your calls to C<NEXT::method()> with
 C<maybe::next::method()>, and calls to C<NEXT::ACTUAL::method()> with
 C<next::method()>.
 
-On systems with Class::C3::XS loaded, or perl versions 5.9.
+On systems with L<Class::C3::XS> present, this will automatically be used to
+speed up method re-dispatch. If you are running perl version 5.9.5 or greater
+then the C3 method resolution algorithm is included in perl. Correct use
+of L<MRO::Compat> as shown above allows your code to be seamlessly forward
+and backwards compatible, taking advantage of native versions if available,
+but falling back to using pure perl C<Class::C3>.
 
 =back
 
@@ -140,18 +146,23 @@ On systems with Class::C3::XS loaded, or perl versions 5.9.
 
 There are some inheritance hierarchies that it is possible to create which
 cannot be resolved to a simple C3 hierarchy. In that case, this module will
-fall back to using NEXT.
+fall back to using C<NEXT>. In this case a warning will be emitted.
 
-Because calculating the MRO of every class every time ->NEXT::foo is used
-from within it is too expensive, runtime manipulations of @ISA are prohibited.
+Because calculating the MRO of every class every time C<< ->NEXT::foo >> is used
+from within it is too expensive, runtime manipulations of C<@ISA> are prohibited.
 
 =head1 FUNCTIONS
 
-This module replaces C<NEXT::AUTOLOAD> with it's own version.
+This module replaces C<NEXT::AUTOLOAD> with it's own version. If warnings
+are enabled then a warning will be emitted on the first use of C<NEXT> by
+each package.
 
 =head1 SEE ALSO
 
-L<Class::C3> for method re-dispatch and L<Moose> for method modifiers.
+L<MRO::Compat> and L<Class::C3> for method re-dispatch and L<Moose> for
+method modifiers and L<roles|Moose::Role>.
+
+L<NEXT> for documentation on the functionality you'll be removing.
 
 =head1 AUTHORS
 
