@@ -13,7 +13,7 @@ extra_tests;
 postamble(<<"EOM");
 testcover: pm_to_blib
 \tcover -delete
-\tHARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test
+\tAUTHOR_TESTING=0 HARNESS_PERL_SWITCHES=-MDevel::Cover \$(MAKE) test
 \tcover
 EOM
 
