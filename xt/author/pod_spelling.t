@@ -1,11 +1,6 @@
-#!perl -w
 use strict;
 use warnings;
-use Test::More;
-
-eval 'use Test::Spelling 0.11';
-plan skip_all => 'Test::Spelling 0.11 not installed' if $@;
-plan skip_all => 'set TEST_SPELLING to enable this test' unless $ENV{TEST_SPELLING};
+use Test::Spelling;
 
 set_spell_cmd('aspell list');
 
