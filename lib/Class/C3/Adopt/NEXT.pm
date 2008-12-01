@@ -20,6 +20,7 @@ our $VERSION = '0.01';
         *NEXT::AUTOLOAD = sub {
             my $class = ref $_[0] || $_[0];
 
+            # 'NEXT::AUTOLOAD' is cargo-culted from C::P::C3, I have no idea if/why it's needed
             my $wanted = our $AUTOLOAD || 'NEXT::AUTOLOAD';
             my ($wanted_class) = $wanted =~ m{(.*)::};
 
