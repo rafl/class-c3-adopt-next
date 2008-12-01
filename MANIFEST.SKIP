@@ -6,3 +6,4 @@ blib\b
 ^Debian
 ^Class-C3-Adopt-NEXT-
 ^MANIFEST.SKIP$
+^cover_db\b
