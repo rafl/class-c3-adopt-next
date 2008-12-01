@@ -173,7 +173,9 @@ Florian Ragwitz C<rafl@debian.org>
 
 Tomas Doran C<bobtfish@bobtfish.net>
 
-=head1 LICENSE
+=head1 COPYRIGHT AND LICENSE
+
+Copyright (c) 2008  Florian Ragwitz
 
 You may distribute this code under the same terms as Perl itself.
 
