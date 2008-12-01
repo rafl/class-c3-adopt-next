@@ -1,0 +1,8 @@
+^\.
+blib\b
+\.(?:bak|o|c|bs)$
+^Makefile$
+^Makefile.old$
+^Debian
+^Class-C3-Adopt-NEXT-
+^MANIFEST.SKIP$
