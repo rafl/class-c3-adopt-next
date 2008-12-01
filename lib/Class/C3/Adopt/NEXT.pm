@@ -36,8 +36,10 @@ our $VERSION = '0.01';
             }
 
             if ($c3_mro_ok{$class} || !length $c3_mro_ok{$class}) {
-                warnings::warnif("${class} is trying to use NEXT, which is crap. use Class::C3 or Moose method modifiers instead.")
-                    unless $warned_for{$class}++;
+                unless ($warned_for{$class}) {
+                    warnings::warnif("${class} is trying to use NEXT, which is crap. use Class::C3 or Moose method modifiers instead.");
+                    $warned_for{$class} = 1;
+                }
             }
 
             unless ($c3_mro_ok{$class}) {
