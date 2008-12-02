@@ -8,6 +8,8 @@ all_from 'lib/Class/C3/Adopt/NEXT.pm';
 requires 'Class::C3';
 requires 'NEXT';
 
+test_requires 'Test::Exception';
+
 extra_tests;
 
 postamble(<<"EOM");
