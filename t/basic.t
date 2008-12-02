@@ -34,11 +34,11 @@ is(scalar @warnings, 1, 'warn only once per class');
 
 throws_ok(sub {
     $quux_obj->non_exist_actual;
-}, qr|^No next::method 'non_exist_actual' found for C3NT::Quux|, 'Non-existant ACTUAL throws correct error');
+}, qr|non_exist_actual\b.*\bC3NT::Quux|, 'Non-existant ACTUAL throws correct error');
 
 throws_ok(sub {
     $quux_obj->actual_fail_halfway;
-}, qr|^No next::method 'actual_fail_halfway' found for C3NT::Quux|, 'Non-existant ACTUAL in superclass throws correct error');
+}, qr|actual_fail_halfway\b.*\bC3NT::Quux|, 'Non-existant ACTUAL in superclass throws correct error');
 
 is( $quux_obj->c3_then_next, 21, 'C3 then NEXT' );
 is( $quux_obj->next_then_c3, 22, 'NEXT then C3' );
