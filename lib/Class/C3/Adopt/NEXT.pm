@@ -7,7 +7,7 @@ use NEXT;
 use Class::C3;
 use warnings::register;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 {
     my %c3_mro_ok;
