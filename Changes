@@ -1,3 +1,8 @@
+0.03  Fri, 05 Dec 2008 22:53:48 +0100
+  * Make the tests work with the error message produced by the pure-perl
+    Class::C3 (RT#41460).
+  * Use MRO::Compat instead of Class::C3 directly.
+
 0.02  Tue, 02 Dec 2008 15:41:39 +0100
   * Depend on Test::Exception.
   * Fix some test fails on perls with different c3 diagnostics.
