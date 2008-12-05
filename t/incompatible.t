@@ -30,4 +30,4 @@ Z->foo;
 Z->foo;
 
 is(scalar @warnings, 1, 'got a warning',);
-like($warnings[0], qr/inconsistent hierarchy .* merge/i, 'inconsistent c3 hierarchy');
+like($warnings[0], qr/inconsistent hierarchy .* merg(?:e|ing)/i, 'inconsistent c3 hierarchy');
