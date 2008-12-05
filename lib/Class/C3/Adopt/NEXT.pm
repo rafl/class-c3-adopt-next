@@ -4,7 +4,7 @@ use warnings;
 package Class::C3::Adopt::NEXT;
 
 use NEXT;
-use Class::C3;
+use MRO::Compat;
 use warnings::register;
 
 our $VERSION = '0.02';
@@ -25,7 +25,7 @@ our $VERSION = '0.02';
             my ($wanted_class) = $wanted =~ m{(.*)::};
 
             unless (exists $c3_mro_ok{$class}) {
-                eval { Class::C3::calculateMRO($class) };
+                eval { mro::get_linear_isa($class, 'c3') };
                 if (my $error = $@) {
                     warn "Class::C3::calculateMRO('${class}') Error: '${error}';"
                     . ' Falling back to plain NEXT.pm behaviour for this class';
