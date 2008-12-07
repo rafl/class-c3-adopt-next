@@ -51,6 +51,8 @@ our $VERSION = '0.03';
             goto &next::method if $wanted_class =~ /^NEXT:.*:ACTUAL/;
             goto &maybe::next::method;
         };
+
+        *NEXT::ACTUAL::AUTOLOAD = \&NEXT::AUTOLOAD;
     }
 
     sub unimport {
