@@ -7,7 +7,7 @@ use NEXT;
 use MRO::Compat;
 use warnings::register;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 {
     my %c3_mro_ok;

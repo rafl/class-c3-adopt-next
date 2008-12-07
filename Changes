@@ -1,3 +1,8 @@
+0.04  Sun, 07 Dec 2008 01:11:59 +0100
+  * Install our hacked version of NEXT::AUTOLOAD into NEXT::ACTUAL::AUTOLOAD
+    too. This makes us work with NEXT 0.61, which doesn't do all of its magic
+    in NEXT::AUTOLOAD anymore (closes RT#41467).
+
 0.03  Fri, 05 Dec 2008 22:53:48 +0100
   * Make the tests work with the error message produced by the pure-perl
     Class::C3 (RT#41460).
