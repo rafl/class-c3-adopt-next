@@ -84,6 +84,7 @@ Class::C3::Adopt::NEXT
     package MyApp::Plugin::FooBar;
     #use NEXT;
     use Class::C3::Adopt::NEXT;
+    # or 'use Class::C3::Adopt::NEXT' -no_warn to suppress warning
 
     sub a_method {
         my ($self) = @_;
