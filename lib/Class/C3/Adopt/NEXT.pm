@@ -38,7 +38,8 @@ our $VERSION = '0.04';
 
             if (length $c3_mro_ok{$class} && $c3_mro_ok{$class}) {
                 unless ($warned_for{$class}) {
-                    warnings::warnif("${class} is trying to use NEXT, which is crap. use Class::C3 or Moose method modifiers instead.");
+                    warnings::warnif("${class} is trying to use NEXT, which is deprecated. "
+                        . "Please see the Class::C3::Adopt::NEXT documentation for details");
                     $warned_for{$class} = 1;
                 }
             }
