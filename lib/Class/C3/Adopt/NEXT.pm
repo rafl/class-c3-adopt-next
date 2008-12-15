@@ -55,6 +55,16 @@ our $VERSION = '0.04';
         *NEXT::ACTUAL::AUTOLOAD = \&NEXT::AUTOLOAD;
     }
 
+    sub import {
+        my ($class, @args) = @_;
+        my $target = caller();
+
+        for my $arg (@args) {
+            $warned_for{$target} = 1
+                if $arg eq '-no_warn';
+        }
+    }
+
     sub unimport {
         my $class = shift;
         @c3_mro_ok{@_} = ('') x @_;
