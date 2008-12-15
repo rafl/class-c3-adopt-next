@@ -91,6 +91,8 @@ Class::C3::Adopt::NEXT
         # Do some stuff
 
         # Re-dispatch method
+        # Note that this will generate a warning the _first_ time the package
+        # uses NEXT unless you un comment the 'no warnings' line above.
         $self->NEXT::method();
     }
 
@@ -109,6 +111,13 @@ This module is intended as a drop-in replacement for NEXT, supporting the same
 interface, but using L<Class::C3> to do the hard work. You can then write new
 code without C<NEXT>, and migrate individual source files to use C<Class::C3> or
 method modifiers as appropriate, at whatever pace you're comfortable with.
+
+=head1 WARNINGS
+
+This module will warn once for each package using NEXT. It uses
+L<warnings::register>, and so can be disabled like by adding
+C<no warnings 'Class::C3::Adopt::NEXT';> to each package which generates a
+warning.
 
 =head1 MIGRATING
 
