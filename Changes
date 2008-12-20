@@ -1,3 +1,10 @@
+0.05  Sat, 20 Dec 2008 16:04:48 +0100
+  * Upgrade Module::Install::ExtraTests to 0.006. This makes things work on
+    Win32 again (closes RT#41817).
+  * Update warning to be more eloquent.
+  * Document warnings.
+  * Implement a -no_warn import switch to turn of warnings locally.
+
 0.04  Sun, 07 Dec 2008 01:11:59 +0100
   * Install our hacked version of NEXT::AUTOLOAD into NEXT::ACTUAL::AUTOLOAD
     too. This makes us work with NEXT 0.61, which doesn't do all of its magic
