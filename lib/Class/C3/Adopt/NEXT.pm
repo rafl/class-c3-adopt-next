@@ -78,7 +78,7 @@ __END__
 
 =head1 NAME
 
-Class::C3::Adopt::NEXT
+Class::C3::Adopt::NEXT - make NEXT suck less
 
 =head1 SYNOPSIS
 
