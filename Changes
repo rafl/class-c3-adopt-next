@@ -1,3 +1,6 @@
+0.06  Thu, 25 Dec 2008 00:15:14 +0100
+  * Update documentation.
+
 0.05  Sat, 20 Dec 2008 16:04:48 +0100
   * Upgrade Module::Install::ExtraTests to 0.006. This makes things work on
     Win32 again (closes RT#41817).
