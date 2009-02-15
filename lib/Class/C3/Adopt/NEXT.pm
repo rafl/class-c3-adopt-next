@@ -5,13 +5,15 @@ package Class::C3::Adopt::NEXT;
 
 use NEXT;
 use MRO::Compat;
+use List::MoreUtils qw/none/;
 use warnings::register;
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 {
     my %c3_mro_ok;
     my %warned_for;
+    my @no_warn_regexes;
 
     {
         my $orig = NEXT->can('AUTOLOAD');
@@ -38,9 +40,11 @@ our $VERSION = '0.06';
 
             if (length $c3_mro_ok{$class} && $c3_mro_ok{$class}) {
                 unless ($warned_for{$class}) {
-                    warnings::warnif("${class} is trying to use NEXT, which is deprecated. "
-                        . "Please see the Class::C3::Adopt::NEXT documentation for details");
                     $warned_for{$class} = 1;
+                    if (!@no_warn_regexes || none { $class =~ $_ } @no_warn_regexes) {
+                        warnings::warnif("${class} is trying to use NEXT, which is deprecated. "
+                            . "Please see the Class::C3::Adopt::NEXT documentation for details");
+                    }
                 }
             }
 
@@ -68,7 +72,10 @@ our $VERSION = '0.06';
 
     sub unimport {
         my $class = shift;
-        @c3_mro_ok{@_} = ('') x @_;
+        my @strings = grep { !ref $_ || ref($_) ne 'Regexp' } @_;
+        my @regexes = grep { ref($_) && ref($_) eq 'Regexp' } @_;
+        @c3_mro_ok{@strings} = ('') x @strings;
+        push @no_warn_regexes, @regexes;
     }
 }
 
@@ -92,6 +99,8 @@ Class::C3::Adopt::NEXT - make NEXT suck less
 
     # Or suppress warnings in a set of modules from one place
     # no Class::C3::Adopt::NEXT qw/ Module1 Module2 Module3 /;
+    # Or suppress using a regex
+    # no Class::C3::Adopt::NEXT qr/^Module\d$/;
 
     sub a_method {
         my ($self) = @_;
@@ -122,14 +131,17 @@ method modifiers as appropriate, at whatever pace you're comfortable with.
 =head1 WARNINGS
 
 This module will warn once for each package using NEXT. It uses
-L<warnings::register>, and so can be disabled like by adding
-C<no warnings 'Class::C3::Adopt::NEXT';> to each package which generates a
-warning, or adding C<use Class::C3::Adopt::NEXT -no_warn;>, or disable
-multiple modules at once by saying:
+L<warnings::register>, and so can be disabled like by adding C<no warnings
+'Class::C3::Adopt::NEXT';> to each package which generates a warning, or
+adding C<use Class::C3::Adopt::NEXT -no_warn;>, or disable multiple modules at
+once by saying:
 
-    no Class::C3::Adopt::Next qw/ Module1 Module2 Module3 /;
+    no Class::C3::Adopt::NEXT qw/ Module1 Module2 Module3 /;
 
-somewhere before the warnings are first triggered.
+somewhere before the warnings are first triggered. You can also setup entire
+name spaces of modules which will not warn using a regex, e.g.
+
+    no Class::C3::Adopt::NEXT qr/^Module\d$/;
 
 =head1 MIGRATING
 

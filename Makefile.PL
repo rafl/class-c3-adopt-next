@@ -7,6 +7,7 @@ all_from 'lib/Class/C3/Adopt/NEXT.pm';
 
 requires 'MRO::Compat';
 requires 'NEXT';
+requires 'List::MoreUtils';
 
 test_requires 'Test::Exception';
 
