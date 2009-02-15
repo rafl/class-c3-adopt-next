@@ -1,3 +1,7 @@
+0.07 UNRELEASED
+  * Add ability to disable warnings for an entire set of modules using a 
+    regex.
+
 0.06  Thu, 25 Dec 2008 00:15:14 +0100
   * Update documentation.
 
