@@ -1,6 +1,9 @@
 0.07 UNRELEASED
   * Add ability to disable warnings for an entire set of modules using a
     regex.
+  * Change warnings to use the caller instead of the class name of the
+    instance so that warnings are reported on the class which actually
+    uses NEXT, not the class which inherits from it.
 
 0.06  Thu, 25 Dec 2008 00:15:14 +0100
   * Update documentation.
