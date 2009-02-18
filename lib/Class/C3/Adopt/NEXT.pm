@@ -138,7 +138,7 @@ once by saying:
     no Class::C3::Adopt::NEXT qw/ Module1 Module2 Module3 /;
 
 somewhere before the warnings are first triggered. You can also setup entire
-namespaces of modules which will not warn using a regex, e.g.
+name spaces of modules which will not warn using a regex, e.g.
 
     no Class::C3::Adopt::NEXT qr/^Module\d$/;
 
