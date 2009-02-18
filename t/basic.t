@@ -22,7 +22,7 @@ is($quux_obj->basic, 42, 'Basic inherited method returns correct value');
 like($warnings[0], qr/C3NT::Quux is trying to use NEXT/, 'warning for the first time NEXT is used');
 
 is($quux_obj->basic, 42, 'Basic inherited method returns correct value');
-is(scalar @warnings, 1, 'warn only once per class');
+is(scalar @warnings, 3, 'warn only once per class');
 
 {
     my $non_exist_rval;
