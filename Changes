@@ -1,4 +1,4 @@
-0.07 UNRELEASED
+0.07  Thu, 19 Feb 2009 01:44:43 +0100
   * Add ability to disable warnings for an entire set of modules using a
     regex.
   * Change warnings to use the caller instead of the class name of the
