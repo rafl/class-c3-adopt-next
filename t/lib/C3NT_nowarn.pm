@@ -18,6 +18,8 @@ package C3NT_nowarn;
 
     use base qw/C3NT::Foo/;
 
+    no warnings 'Class::C3::Adopt::NEXT';
+
     sub basic               { shift->NEXT::basic                       }
     sub next_then_c3        { shift->next::method                      }
     sub actual_fail_halfway { shift->NEXT::ACTUAL::actual_fail_halfway }
@@ -27,6 +29,8 @@ package C3NT_nowarn;
     package C3NT::Baz;
 
     use base qw/C3NT::Foo/;
+
+    no warnings 'Class::C3::Adopt::NEXT';
 
     sub basic        { shift->NEXT::basic        }
     sub c3_then_next { shift->NEXT::c3_then_next }

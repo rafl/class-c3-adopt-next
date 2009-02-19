@@ -45,4 +45,10 @@ package C3NT;
     sub next_then_c3        { shift->NEXT::next_then_c3                }
 }
 
+{
+    package C3NT::Child;
+
+    use base qw/C3NT::Quux/;
+}
+
 1;

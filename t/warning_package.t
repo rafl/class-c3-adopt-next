@@ -1,0 +1,22 @@
+use strict;
+use warnings;
+use Test::More tests => 3;
+use Test::Exception;
+
+use FindBin;
+use lib "$FindBin::Bin/lib";
+
+use Class::C3::Adopt::NEXT;
+
+use vars qw/@warnings/;
+
+BEGIN { $SIG{__WARN__} = sub { push @warnings, @_ } }
+
+use C3NT;
+
+my $child = C3NT::Child->new;
+@warnings = ();
+$child->basic;
+like($warnings[0], qr/C3NT::Quux is trying to use NEXT/, 'warning for the class NEXT is used by');
+like($warnings[1], qr/C3NT::Bar is trying to use NEXT/,  'warning for the class NEXT is used by');
+like($warnings[2], qr/C3NT::Baz is trying to use NEXT/,  'warning for the class NEXT is used by');

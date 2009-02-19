@@ -21,6 +21,7 @@ our $VERSION = '0.07';
         no warnings 'redefine';
         *NEXT::AUTOLOAD = sub {
             my $class = ref $_[0] || $_[0];
+            my $caller = caller();
 
             # 'NEXT::AUTOLOAD' is cargo-culted from C::P::C3, I have no idea if/why it's needed
             my $wanted = our $AUTOLOAD || 'NEXT::AUTOLOAD';
@@ -39,10 +40,10 @@ our $VERSION = '0.07';
             }
 
             if (length $c3_mro_ok{$class} && $c3_mro_ok{$class}) {
-                unless ($warned_for{$class}) {
-                    $warned_for{$class} = 1;
-                    if (!@no_warn_regexes || none { $class =~ $_ } @no_warn_regexes) {
-                        warnings::warnif("${class} is trying to use NEXT, which is deprecated. "
+                unless ($warned_for{$caller}) {
+                    $warned_for{$caller} = 1;
+                    if (!@no_warn_regexes || none { $caller =~ $_ } @no_warn_regexes) {
+                        warnings::warnif("${caller} is trying to use NEXT, which is deprecated. "
                             . "Please see the Class::C3::Adopt::NEXT documentation for details");
                     }
                 }
