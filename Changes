@@ -1,3 +1,7 @@
+0.08
+  * Add additional example for doc for converting from NEXT, to help out
+    lazy people who only read the verbatim sections (abraxxa).
+
 0.07  Thu, 19 Feb 2009 01:44:43 +0100
   * Add ability to disable warnings for an entire set of modules using a
     regex.

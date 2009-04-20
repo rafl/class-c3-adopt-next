@@ -183,6 +183,16 @@ and gradually replace your calls to C<NEXT::method()> with
 C<maybe::next::method()>, and calls to C<NEXT::ACTUAL::method()> with
 C<next::method()>.
 
+Example:
+
+    $self->NEXT::yourmethodname();
+    becomes
+    $self->maybe::next::method();
+
+    $self->NEXT::ACTUAL::yourmethodname();
+    becomes
+    $self->next::method();
+
 On systems with L<Class::C3::XS> present, this will automatically be used to
 speed up method re-dispatch. If you are running perl version 5.9.5 or greater
 then the C3 method resolution algorithm is included in perl. Correct use
