@@ -115,7 +115,7 @@ Class::C3::Adopt::NEXT - make NEXT suck less
 
 =head1 DESCRIPTION
 
-L<NEXT> sucks. I mean, it B<really really sucks>. It was a good solution a few
+L<NEXT> was a good solution a few
 years ago, but isn't any more.  It's slow, and the order in which it
 re-dispatches methods appears random at times. It also encourages bad
 programming practices, as you end up with code to re-dispatch methods when all
@@ -146,52 +146,28 @@ name spaces of modules which will not warn using a regex, e.g.
 
 =head1 MIGRATING
 
-There are two main reasons for using NEXT:
+=head2 Current code using NEXT
 
-=over
-
-=item Providing plugins which run functionality before/after your methods.
-
-Use L<Moose> and make all of your plugins L<Moose::Roles|Moose::Role>, then use
-method modifiers to wrap methods.
-
-Example:
-
-    package MyApp::Plugin::FooBar;
-    use Moose::Role;
-
-    before 'a_method' => {
-        my ($self) = @_;
-        # Do some stuff
-    };
-
-You can then use something like L<MooseX::Traits> or
-L<MooseX::Object::Pluggable> to load plugins dynamically.
-
-=item A complex class hierarchy where you actually need multiple dispatch.
-
-Recommended strategy is to find the core class responsible for loading all the
-other classes in your application and add the following code:
-
-    use MRO::Compat;
-    Class::C3::initialize();
-
-after you have loaded all of your modules.
-
-You then add C<use mro 'c3'> to the top of a package as you start converting it,
+You add C<use MRO::Compat> to the top of a package as you start converting it,
 and gradually replace your calls to C<NEXT::method()> with
 C<maybe::next::method()>, and calls to C<NEXT::ACTUAL::method()> with
 C<next::method()>.
 
 Example:
 
-    $self->NEXT::yourmethodname();
-    becomes
-    $self->maybe::next::method();
+    sub yourmethod {
+        my $self = shift;
+        
+        # $self->NEXT::yourmethod(@_); becomes
+        $self->maybe::next::method();
+    }
 
-    $self->NEXT::ACTUAL::yourmethodname();
-    becomes
-    $self->next::method();
+    sub othermethod {
+        my $self = shift;
+
+        # $self->NEXT::ACTUAL::yourmethodname(); becomes
+        $self->next::method();
+    }
 
 On systems with L<Class::C3::XS> present, this will automatically be used to
 speed up method re-dispatch. If you are running perl version 5.9.5 or greater
@@ -200,7 +176,34 @@ of L<MRO::Compat> as shown above allows your code to be seamlessly forward
 and backwards compatible, taking advantage of native versions if available,
 but falling back to using pure perl C<Class::C3>.
 
-=back
+=head2 Writing new code
+
+Use L<Moose> and make all of your plugins L<Moose::Roles|Moose::Role>, then use
+method modifiers to wrap methods.
+
+Example:
+
+    package MyApp::Role::FooBar;
+    use Moose::Role;
+
+    before 'a_method' => sub {
+        my ($self) = @_;
+        # Do some stuff
+    };
+
+    around 'a_method' => sub {
+        my $orig = shift;
+        my $self = shift;
+        # Do some stuff before
+        my $ret = $self->$orig(@_); # Run wrapped method (or not!)
+        # Do some stuff after
+        return $ret;
+    };
+
+    package MyApp;
+    use Moose;
+
+    with 'MyApp::Role::FooBar';
 
 =head1 CAVEATS
 
@@ -209,7 +212,8 @@ cannot be resolved to a simple C3 hierarchy. In that case, this module will
 fall back to using C<NEXT>. In this case a warning will be emitted.
 
 Because calculating the MRO of every class every time C<< ->NEXT::foo >> is used
-from within it is too expensive, runtime manipulations of C<@ISA> are prohibited.
+from within it is too expensive, runtime manipulations of C<@ISA> are
+prohibited.
 
 =head1 FUNCTIONS
 
