@@ -8,7 +8,7 @@ use MRO::Compat;
 use List::MoreUtils qw/none/;
 use warnings::register;
 
-our $VERSION = '0.09';
+our $VERSION = '0.10';
 
 {
     my %c3_mro_ok;
