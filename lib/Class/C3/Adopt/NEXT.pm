@@ -8,7 +8,7 @@ use MRO::Compat;
 use List::MoreUtils qw/none/;
 use warnings::register;
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 {
     my %c3_mro_ok;
@@ -43,8 +43,8 @@ our $VERSION = '0.10';
                 unless ($warned_for{$caller}) {
                     $warned_for{$caller} = 1;
                     if (!@no_warn_regexes || none { $caller =~ $_ } @no_warn_regexes) {
-                        warnings::warnif("${caller} uses NEXT, which is deprecated. "
-                            . "Please see the Class::C3::Adopt::NEXT documentation for details");
+                        warnings::warnif("${caller} uses NEXT, which is deprecated. Please see "
+                            . "the Class::C3::Adopt::NEXT documentation for details. NEXT used ");
                     }
                 }
             }
