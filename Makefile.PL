@@ -9,7 +9,7 @@ requires 'MRO::Compat';
 requires 'NEXT';
 requires 'List::MoreUtils';
 
-test_requires 'Test::Exception';
+test_requires 'Test::Exception' => '0.27';
 
 extra_tests;
 

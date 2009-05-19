@@ -1,4 +1,13 @@
-0.08
+0.10  Tue, 12 May 2009 13:23:52 +0200
+  * Depend on Test::Exception 0.27 to avoid breaking tests on older versions
+    (Closes: RT#45986).
+
+0.09  Tue, 28 Apr 2009 23:14:58 +0100
+  * Rewrite a chunk of the documentation to be more clear, and also to beter
+    cater for our primary audience (people being linked from Catalyst).
+    Based on feeback from kiffin.
+
+0.08  Wed, 22 Apr 2009 05:19:48 +0200
   * Add additional example for doc for converting from NEXT, to help out
     lazy people who only read the verbatim sections (abraxxa).
 
