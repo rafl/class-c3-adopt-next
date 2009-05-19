@@ -43,7 +43,7 @@ our $VERSION = '0.07';
                 unless ($warned_for{$caller}) {
                     $warned_for{$caller} = 1;
                     if (!@no_warn_regexes || none { $caller =~ $_ } @no_warn_regexes) {
-                        warnings::warnif("${caller} is trying to use NEXT, which is deprecated. "
+                        warnings::warnif("${caller} uses NEXT, which is deprecated. "
                             . "Please see the Class::C3::Adopt::NEXT documentation for details");
                     }
                 }
