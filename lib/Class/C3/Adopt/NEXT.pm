@@ -115,27 +115,27 @@ Class::C3::Adopt::NEXT - make NEXT suck less
 
 =head1 DESCRIPTION
 
-L<NEXT> was a good solution a few
-years ago, but isn't any more.  It's slow, and the order in which it
-re-dispatches methods appears random at times. It also encourages bad
-programming practices, as you end up with code to re-dispatch methods when all
-you really wanted to do was run some code before or after a method fired.
+L<NEXT> was a good solution a few years ago, but isn't any more.  It's slow,
+and the order in which it re-dispatches methods appears random at times. It
+also encourages bad programming practices, as you end up with code to
+re-dispatch methods when all you really wanted to do was run some code before
+or after a method fired.
 
-However, if you have a large application, then weaning yourself off C<NEXT> isn't
-easy.
+However, if you have a large application, then weaning yourself off C<NEXT>
+isn't easy.
 
 This module is intended as a drop-in replacement for NEXT, supporting the same
 interface, but using L<Class::C3> to do the hard work. You can then write new
-code without C<NEXT>, and migrate individual source files to use C<Class::C3> or
-method modifiers as appropriate, at whatever pace you're comfortable with.
+code without C<NEXT>, and migrate individual source files to use C<Class::C3>
+or method modifiers as appropriate, at whatever pace you're comfortable with.
 
 =head1 WARNINGS
 
 This module will warn once for each package using NEXT. It uses
 L<warnings::register>, and so can be disabled like by adding C<no warnings
-'Class::C3::Adopt::NEXT';> to each package which generates a warning, or
-adding C<use Class::C3::Adopt::NEXT -no_warn;>, or disable multiple modules at
-once by saying:
+'Class::C3::Adopt::NEXT';> to each package which generates a warning, or adding
+C<use Class::C3::Adopt::NEXT -no_warn;>, or disable multiple modules at once by
+saying:
 
     no Class::C3::Adopt::NEXT qw/ Module1 Module2 Module3 /;
 
@@ -157,7 +157,7 @@ Example:
 
     sub yourmethod {
         my $self = shift;
-        
+
         # $self->NEXT::yourmethod(@_); becomes
         $self->maybe::next::method();
     }
@@ -171,10 +171,10 @@ Example:
 
 On systems with L<Class::C3::XS> present, this will automatically be used to
 speed up method re-dispatch. If you are running perl version 5.9.5 or greater
-then the C3 method resolution algorithm is included in perl. Correct use
-of L<MRO::Compat> as shown above allows your code to be seamlessly forward
-and backwards compatible, taking advantage of native versions if available,
-but falling back to using pure perl C<Class::C3>.
+then the C3 method resolution algorithm is included in perl. Correct use of
+L<MRO::Compat> as shown above allows your code to be seamlessly forward and
+backwards compatible, taking advantage of native versions if available, but
+falling back to using pure perl C<Class::C3>.
 
 =head2 Writing new code
 
@@ -211,20 +211,20 @@ There are some inheritance hierarchies that it is possible to create which
 cannot be resolved to a simple C3 hierarchy. In that case, this module will
 fall back to using C<NEXT>. In this case a warning will be emitted.
 
-Because calculating the MRO of every class every time C<< ->NEXT::foo >> is used
-from within it is too expensive, runtime manipulations of C<@ISA> are
+Because calculating the MRO of every class every time C<< ->NEXT::foo >> is
+used from within it is too expensive, runtime manipulations of C<@ISA> are
 prohibited.
 
 =head1 FUNCTIONS
 
-This module replaces C<NEXT::AUTOLOAD> with it's own version. If warnings
-are enabled then a warning will be emitted on the first use of C<NEXT> by
-each package.
+This module replaces C<NEXT::AUTOLOAD> with it's own version. If warnings are
+enabled then a warning will be emitted on the first use of C<NEXT> by each
+package.
 
 =head1 SEE ALSO
 
-L<MRO::Compat> and L<Class::C3> for method re-dispatch and L<Moose> for
-method modifiers and L<roles|Moose::Role>.
+L<MRO::Compat> and L<Class::C3> for method re-dispatch and L<Moose> for method
+modifiers and L<roles|Moose::Role>.
 
 L<NEXT> for documentation on the functionality you'll be removing.
 
