@@ -236,7 +236,7 @@ Tomas Doran C<bobtfish@bobtfish.net>
 
 =head1 COPYRIGHT AND LICENSE
 
-Copyright (c) 2008  Florian Ragwitz
+Copyright (c) 2008, 2009  Florian Ragwitz
 
 You may distribute this code under the same terms as Perl itself.
 
