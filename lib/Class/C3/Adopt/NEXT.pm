@@ -2,91 +2,12 @@ use strict;
 use warnings;
 
 package Class::C3::Adopt::NEXT;
+# ABSTRACT: make NEXT suck less
 
 use NEXT;
 use MRO::Compat;
 use List::MoreUtils qw/none/;
 use warnings::register;
-
-our $VERSION = '0.12';
-
-{
-    my %c3_mro_ok;
-    my %warned_for;
-    my @no_warn_regexes;
-
-    {
-        my $orig = NEXT->can('AUTOLOAD');
-
-        no warnings 'redefine';
-        *NEXT::AUTOLOAD = sub {
-            my $class = ref $_[0] || $_[0];
-            my $caller = caller();
-
-            # 'NEXT::AUTOLOAD' is cargo-culted from C::P::C3, I have no idea if/why it's needed
-            my $wanted = our $AUTOLOAD || 'NEXT::AUTOLOAD';
-            my ($wanted_class) = $wanted =~ m{(.*)::};
-
-            unless (exists $c3_mro_ok{$class}) {
-                eval { mro::get_linear_isa($class, 'c3') };
-                if (my $error = $@) {
-                    warn "Class::C3::calculateMRO('${class}') Error: '${error}';"
-                    . ' Falling back to plain NEXT.pm behaviour for this class';
-                    $c3_mro_ok{$class} = 0;
-                }
-                else {
-                    $c3_mro_ok{$class} = 1;
-                }
-            }
-
-            if (length $c3_mro_ok{$class} && $c3_mro_ok{$class}) {
-                unless ($warned_for{$caller}) {
-                    $warned_for{$caller} = 1;
-                    if (!@no_warn_regexes || none { $caller =~ $_ } @no_warn_regexes) {
-                        warnings::warnif("${caller} uses NEXT, which is deprecated. Please see "
-                            . "the Class::C3::Adopt::NEXT documentation for details. NEXT used ");
-                    }
-                }
-            }
-
-            unless ($c3_mro_ok{$class}) {
-                $NEXT::AUTOLOAD = $wanted;
-                goto &$orig;
-            }
-
-            goto &next::method if $wanted_class =~ /^NEXT:.*:ACTUAL/;
-            goto &maybe::next::method;
-        };
-
-        *NEXT::ACTUAL::AUTOLOAD = \&NEXT::AUTOLOAD;
-    }
-
-    sub import {
-        my ($class, @args) = @_;
-        my $target = caller();
-
-        for my $arg (@args) {
-            $warned_for{$target} = 1
-                if $arg eq '-no_warn';
-        }
-    }
-
-    sub unimport {
-        my $class = shift;
-        my @strings = grep { !ref $_ || ref($_) ne 'Regexp' } @_;
-        my @regexes = grep { ref($_) && ref($_) eq 'Regexp' } @_;
-        @c3_mro_ok{@strings} = ('') x @strings;
-        push @no_warn_regexes, @regexes;
-    }
-}
-
-1;
-
-__END__
-
-=head1 NAME
-
-Class::C3::Adopt::NEXT - make NEXT suck less
 
 =head1 SYNOPSIS
 
@@ -228,16 +149,84 @@ modifiers and L<roles|Moose::Role>.
 
 L<NEXT> for documentation on the functionality you'll be removing.
 
-=head1 AUTHORS
+=begin Pod::Coverage
 
-Florian Ragwitz C<rafl@debian.org>
+import
 
-Tomas Doran C<bobtfish@bobtfish.net>
+unimport
 
-=head1 COPYRIGHT AND LICENSE
-
-Copyright (c) 2008, 2009  Florian Ragwitz
-
-You may distribute this code under the same terms as Perl itself.
+=end Pod::Coverage
 
 =cut
+
+{
+    my %c3_mro_ok;
+    my %warned_for;
+    my @no_warn_regexes;
+
+    {
+        my $orig = NEXT->can('AUTOLOAD');
+
+        no warnings 'redefine';
+        *NEXT::AUTOLOAD = sub {
+            my $class = ref $_[0] || $_[0];
+            my $caller = caller();
+
+            # 'NEXT::AUTOLOAD' is cargo-culted from C::P::C3, I have no idea if/why it's needed
+            my $wanted = our $AUTOLOAD || 'NEXT::AUTOLOAD';
+            my ($wanted_class) = $wanted =~ m{(.*)::};
+
+            unless (exists $c3_mro_ok{$class}) {
+                eval { mro::get_linear_isa($class, 'c3') };
+                if (my $error = $@) {
+                    warn "Class::C3::calculateMRO('${class}') Error: '${error}';"
+                    . ' Falling back to plain NEXT.pm behaviour for this class';
+                    $c3_mro_ok{$class} = 0;
+                }
+                else {
+                    $c3_mro_ok{$class} = 1;
+                }
+            }
+
+            if (length $c3_mro_ok{$class} && $c3_mro_ok{$class}) {
+                unless ($warned_for{$caller}) {
+                    $warned_for{$caller} = 1;
+                    if (!@no_warn_regexes || none { $caller =~ $_ } @no_warn_regexes) {
+                        warnings::warnif("${caller} uses NEXT, which is deprecated. Please see "
+                            . "the Class::C3::Adopt::NEXT documentation for details. NEXT used ");
+                    }
+                }
+            }
+
+            unless ($c3_mro_ok{$class}) {
+                $NEXT::AUTOLOAD = $wanted;
+                goto &$orig;
+            }
+
+            goto &next::method if $wanted_class =~ /^NEXT:.*:ACTUAL/;
+            goto &maybe::next::method;
+        };
+
+        *NEXT::ACTUAL::AUTOLOAD = \&NEXT::AUTOLOAD;
+    }
+
+    sub import {
+        my ($class, @args) = @_;
+        my $target = caller();
+
+        for my $arg (@args) {
+            $warned_for{$target} = 1
+                if $arg eq '-no_warn';
+        }
+    }
+
+    sub unimport {
+        my $class = shift;
+        my @strings = grep { !ref $_ || ref($_) ne 'Regexp' } @_;
+        my @regexes = grep { ref($_) && ref($_) eq 'Regexp' } @_;
+        @c3_mro_ok{@strings} = ('') x @strings;
+        push @no_warn_regexes, @regexes;
+    }
+}
+
+1;

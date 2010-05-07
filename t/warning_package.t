@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 use Test::More tests => 3;
-use Test::Exception;
+use Test::Exception 0.27;
 
 use FindBin;
 use lib "$FindBin::Bin/lib";
