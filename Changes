@@ -1,3 +1,7 @@
+0.13  Fri, 07 May 2010 22:49:46 +0200
+  * Stop shipping some author tests, so users stupid enough to run them won't
+    spam me with fail reports.
+
 0.12  Mon, 08 Jun 2009 14:16:34 +0200
   * Update copyright notice.
   * A couple of pod whitespace changes.
